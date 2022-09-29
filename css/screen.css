@@ -67,6 +67,17 @@
     /*  = 48px */
     --global-whitespace-xxl: calc(var(--global-whitespace) * 3);
     /*  = 72px */
+
+    --global-input-backgroundColor: White;
+    --global-input-color: var(--global-color-neutral-xxxx-dark);
+    --global-input-borderColor: var(--global-color-neutral-xxx-light);
+    --global-input-hover-borderColor: var(--global-color-neutral-xx-light);
+    --global-fake-hover-borderColor: #A0A1AD;
+    --global-fake-focus-borderColor: #81ADF0;
+    --global-input-focus-borderColor: var(--global-color-alpha);
+    --global-input-boxShadow: 0 0 0 0.5px var(--global-color-alpha-x-transparent);
+
+    --global-transition: all 50ms cubic-bezier(0.430, 0.180, 0.350, 0.865);
 }
 
 /*------------------------------------*\
@@ -601,10 +612,10 @@ input::placeholder {
     -moz-appearance: none;
     appearance: none;
     width: 100%;
-    border: var(--global-borderWidth) solid var(--global-color-neutral-xxx-light);
     border-radius: var(--global-borderRadius);
-    color: var(--global-color-neutral-xxxx-dark);
-    background-color: White;
+    border: var(--global-borderWidth) solid var(--global-input-borderColor);
+    background-color: var(--global-input-backgroundColor);
+    color: var(--global-input-color);
     font-family: inherit;
     font-size: 16px;
     line-height: calc(var(--global-baseline) * 3);
@@ -614,19 +625,195 @@ input::placeholder {
 }
 
 .c-input:hover {
-    border-color: var(--global-color-neutral-xx-light);
+    border-color: var(--global-input-hover-borderColor);
 }
 
 .c-input:focus,
 .c-input:active {
-    border-color: var(--global-color-alpha);
-    box-shadow: 0 0 0 3px var(--global-color-alpha-x-transparent);
+    border-color: var(--global-input-focus-borderColor);
+    box-shadow: 0 0 0 3px var(--global-input-boxShadow);
 }
 
 /* option input for checkboxes and radio buttons */
 
 .c-option {
     margin-right: var(--global-whitespace-sm);
+}
+
+.c-option-list {
+    margin-bottom: 24px;
+}
+
+.c-option-list__item {
+    margin-bottom: 12px;
+}
+/* .c-option--hidden:checked + label {
+    background-color: hotpink;
+} */
+
+/*
+    Component: custom options
+    ---
+    Class to put on custom options
+*/
+
+.c-custom-select{
+    display: flex;
+    align-items: center;
+    flex-direction: row-reverse;
+}
+
+.c-custom-select__symbol{
+    fill: var(--global-color-neutral-x-light);
+    pointer-events: none;
+    height: 24px;
+    width: 24px;
+    position: absolute;
+}
+
+.c-custom-option{
+    display: flex;
+    --custom-option-borderColor: var(--global-input-borderColor);
+    --custom-option-focus-borderColor: var(--global-input-focus-borderColor);
+    --custom-option-hover-borderColor: var(--global-input-focus-borderColor);
+}
+
+.c-custom-option__fake-input{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    border: var(--global-borderWidth) solid var(--custom-option-borderColor);
+    margin-right: 8px;
+}
+
+.c-custom-option:hover{
+    --custom-option-borderColor: var(--custom-option-hover-borderColor);
+}
+
+.c-option:focus + label .c-custom-option__fake-input{
+    border-color: var(--global-fake-focus-borderColor);
+    box-shadow: var(--global-input-boxShadow); 
+}
+
+.c-custom-option__fake-input:active{
+    border-color: var(--global-fake-focus-borderColor);
+}
+
+.c-custom-option__fake-input--checkbox{
+    border-radius: var(--global-borderRadius);
+}
+
+.c-custom-option__fake-input--radio{
+    border-radius: 100%;
+}
+
+.c-custom-option__symbol{
+    display: block;
+    opacity: 0;
+    transform: scale(0.1);
+}
+
+.c-custom-option__fake-input--checkbox .c-custom-option__symbol {
+    fill: var(--global-color-alpha);
+    height: 10px;
+    width: 10px;
+}
+
+.c-custom-option__fake-input--radio .c-custom-option__symbol {
+    background-color: var(--global-color-alpha);
+    height: 6px;
+    width: 6px;
+    border-radius: 50%;
+}
+
+.c-option--hidden:checked+.c-custom-option {
+    
+}
+
+.c-option--hidden:checked+.c-custom-option .c-custom-option__symbol {
+    opacity: 1;
+    transition: var(--global-transition);
+    transform: scale(1);
+}
+/*
+    Component: c-toggle
+    ---
+    Class to put on all form labels
+*/
+.c-custom-toggle{
+    display: flex;
+    --toggle-backgroundColor: #F5F6FA;
+    --custom-option-borderColor: #E2E3E7;
+    --custom-toggle-selectColor: #2E77E6;
+    --custom-button-color: white;
+    --toggle-button-translate : 0px;
+    --toggle-boxshadow: white;
+}
+
+.c-custom-toggle__fake-input{
+    display: block;
+    width: 48px;
+    height: 24px;
+    border: var(--global-borderWidth) solid var(--custom-option-borderColor);
+    margin-right: var(--global-whitespace-md);
+    background-color: var(--toggle-backgroundColor);
+    border-radius: 32px;
+    transition: var(--global-transitionTiming-alpha);
+    box-shadow: var(--toggle-boxshadow, 0);
+}
+
+.c-custom-toggle__fake-input::after{
+    display: block;
+    content: "";
+    transition: all var(--global-transitionTiming-alpha);
+    border-radius: 70%;
+    height: 22px;
+    width: 22px;
+    background-color: var(--custom-button-color);
+    transform: translateX(var(--toggle-button-translate));
+    box-shadow: 0 0 1px var(--global-color-neutral-light);
+}
+
+.c-option--hidden:checked+.c-custom-toggle .c-custom-toggle__fake-input::after {
+    transform: translateX(24px);
+    
+}
+
+.c-option--hidden:checked+.c-custom-toggle .c-custom-toggle__fake-input {
+    background-color: var(--custom-toggle-selectColor);
+}
+
+
+
+.c-option:focus+label .c-custom-toggle__fake-input {
+    border-color: var(--global-fake-focus-borderColor);
+    box-shadow: var(--global-input-boxShadow);
+}
+
+.c-option--hidden:active+.c-custom-toggle .c-custom-toggle__fake-input::after {
+}
+.c-option--hidden:active:checked+.c-custom-toggle .c-custom-toggle__fake-input::after {
+}
+
+.c-toggle-list__item{
+    margin-bottom: var(--global-whitespace-xs);
+}
+
+.c-toggle-list__item +.c-toggle-list__item{
+    margin-top: var(--global-whitespace-xs);
+}
+
+.c-toggle__label--inverted{
+display: flex;
+flex-direction: row-reverse;
+justify-content: space-between;
+width: 100%;
+}
+
+.c-toggle__label--inverted .c-custom-toggle__fake-input{
+    margin-right: 0;
 }
 
 /*
@@ -644,7 +831,7 @@ input::placeholder {
 }
 
 .c-label--option {
-    padding-bottom: 0;
+    
 }
 
 /*
